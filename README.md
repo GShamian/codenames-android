@@ -1,2 +1,2 @@
-# codenames-android
-Курсовая работа "Codenames на Android"
+# spyfall-android
+Курсовая работа "Spyfall на Android"
