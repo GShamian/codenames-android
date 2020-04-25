@@ -1,10 +1,5 @@
 #:kivy 1.9.2
 
-<MyScreenManager>:
-    FirstScreen:
-        id: first_screen
-    SecondScreen:
-
 <FirstScreen>:
     name: '_first_screen_'
     AnchorLayout:
@@ -31,6 +26,7 @@
                     orientation: "vertical"
                     size_hint: (1, 0.2)
                     spacing: 20
+
                     Button:
                         text: "Create Lobby"
                         on_press: root.manager.current = "_third_screen_"
@@ -176,6 +172,7 @@
                     max: 10
                     min: 5
                     step: 1
+                    on_value: root.my_value(self, value)
                         
                 Label:
                     size_hint: (.2, .2)
@@ -212,6 +209,8 @@
                 Button:
                     size_hint:(.3,.4)
                     text:"Play"
+                    on_press: root.manager.current = "_fifth_screen_"
+                    on_press: root.play()
 
 
 <FourthScreen>:
@@ -253,6 +252,116 @@
             Button:                
                 halign: "center"
                 valign: "top"
-                text: "Enter game"
+                text: "Enter Game"
                 on_press: root.print_token(root.token.text)
+
+
+<FifthScreen>:
+    name: '_fifth_screen_'
+
+    BoxLayout:
+        orientation: "vertical"
+        
+        AnchorLayout:
+            anchor_x: "center"
+            anchor_y: "bottom"
+            size_hint: (1, .3)
+
+            Button:     
+                size_hint: (0.2, 0.4)           
+                halign: "center"
+                valign: "top"
+                text: "Role"
+                on_press: root.rolePopup()
+
+        AnchorLayout:
+            anchor_x: "center"
+            anchor_y: "center"
+
+            GridLayout:
+                cols: 2
+                size_hint: (1, .7)
+                spacing: 15
+
+                MDRaisedButton:               
+                    halign: "center"
+                    valign: "top"
+                    text: "Location"
+
+                MDRaisedButton:        
+                    halign: "center"
+                    valign: "top"
+                    text: "Location"
+                
+                MDRaisedButton:        
+                    halign: "center"
+                    valign: "top"
+                    text: "Location"
+
+                MDRaisedButton:        
+                    halign: "center"
+                    valign: "top"
+                    text: "Location"
+
+                MDRaisedButton:        
+                    halign: "center"
+                    valign: "top"
+                    text: "Location"
+
+                MDRaisedButton:        
+                    halign: "center"
+                    valign: "top"
+                    text: "Location"
+
+                MDRaisedButton:        
+                    halign: "center"
+                    valign: "top"
+                    text: "Location"
+
+                MDRaisedButton:        
+                    halign: "center"
+                    valign: "top"
+                    text: "Location"
+
+                MDRaisedButton:        
+                    halign: "center"
+                    valign: "top"
+                    text: "Location"
+
+                MDRaisedButton:        
+                    halign: "center"
+                    valign: "top"
+                    text: "Location"
+
+                MDRaisedButton:        
+                    halign: "center"
+                    valign: "top"
+                    text: "Location"
+
+                MDRaisedButton:        
+                    halign: "center"
+                    valign: "top"
+                    text: "Location"
+
+                MDRaisedButton:        
+                    halign: "center"
+                    valign: "top"
+                    text: "Location"
+
+                MDRaisedButton:        
+                    halign: "center"
+                    valign: "top"
+                    text: "Location"
+
+                MDRaisedButton:        
+                    halign: "center"
+                    valign: "top"
+                    text: "Location"
+
+                MDRaisedButton:
+                    halign: "center"
+                    valign: "top"
+                    text: "Location"
+
+
 
