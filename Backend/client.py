@@ -29,7 +29,7 @@ def connect(token):
 def checkLocation(token, location):
     client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     client.connect(address_to_server)
-    client.send(bytes(str(location) + str(token), encoding='UTF-8'))
+    client.send(bytes(str(location) + ' ' + str(token), encoding='UTF-8'))
     # Получаем ответ от сервера является ли эта локация верной
     response = client.recv(1024).decode()
     return response
@@ -39,3 +39,4 @@ def checkLocation(token, location):
 token = createLobby(5,2)
 print(token[0])
 print(connect(token[0]))
+print(checkLocation(token[0], 'Hollywood'))

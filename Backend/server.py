@@ -85,8 +85,8 @@ while True:
         # Отправляем посылку клиенту в двоичном формате
         connection.send(pickle.dumps(role_keyLocation_locations))
 
-    elif ''.join(data[0]) in key_locations:
-        if data[1] in tokens:
+    elif data[0] in database:
+        if data[1] in tokens and data[0] in key_locations:
             if tokens.index(data[1]) == key_locations.index(data[0]):
                 connection.send(bytes('true', encoding='UTF-8'))
         else:
