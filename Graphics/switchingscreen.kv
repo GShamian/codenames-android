@@ -1,7 +1,21 @@
 #:kivy 1.9.2
+#:import images_path kivymd.images_path
+#:import FadeTransition kivy.uix.screenmanager.FadeTransition
 
-<FirstScreen>:
-    name: '_first_screen_'
+<ScreenManagement>:
+    transition: FadeTransition()
+    create_screen: create_screen
+    MainScreen:
+        id: main_screen
+    OptionsScreen:
+    CreateLobbyScreen:
+        id: create_screen
+    ConnectScreen:
+    PlaygroundScreen:
+
+
+<MainScreen>:
+    name: 'main'
     AnchorLayout:
         anchor_x: "center"
         anchor_y: "center"
@@ -29,10 +43,12 @@
 
                     Button:
                         text: "Create Lobby"
-                        on_press: root.manager.current = "_third_screen_"
+                        on_press: root.manager.current = "createlobby"
+                        on_press: root.isAdmin_change(True)
                     Button:
                         text: "Connect"
-                        on_press: root.manager.current = "_fourth_screen_"
+                        on_press: root.manager.current = "connect"
+                        on_press: root.isAdmin_change(False)
 
     AnchorLayout:
         anchor_x: "right"
@@ -47,7 +63,7 @@
                 halign: "center"
                 valign: "middle"
                 text: "Settings"
-                on_press: root.manager.current = "_second_screen_"
+                on_press: root.manager.current = "options"
 
             Button:
                 halign: "center"
@@ -56,8 +72,8 @@
     
 
 
-<SecondScreen>:
-    name: '_second_screen_'
+<OptionsScreen>:
+    name: 'options'
 
     AnchorLayout:
         anchor_x: "left"
@@ -72,7 +88,7 @@
                 halign: "center"
                 valign: "middle"
                 text: "Back"
-                on_press: root.manager.current = "_first_screen_"
+                on_press: root.manager.current = "main"
 
 
     AnchorLayout:
@@ -112,8 +128,10 @@
             Label:
                 text: str(effects_volume.value)
 
-<ThirdScreen>:
-    name: '_third_screen_'
+<CreateLobbyScreen>:
+    name: 'createlobby'
+    label_spyamount : lbl_spy
+    token_layout : token_layout
 
     BoxLayout:
         orientation: "vertical"
@@ -128,34 +146,39 @@
                 valign: "middle"
                 text: "Back"
                 size_hint: (.2, .5)
-                on_press: root.manager.current = "_first_screen_"
+                on_press: root.manager.current = "main"
 
         AnchorLayout:
             anchor_x: "center"
             anchor_y: "center"
             size_hint: (1, .2)
-
+            
             GridLayout:
                 orientation: "vertical"
                 size_hint: (.6, .7)
                 spacing: 30
                 padding: 0
                 cols: 2
+                id: token_layout
+                token_button : token_button
 
                 Label:
                     id: token
                     text: "Token" 
 
                 Button:                
+                    id: token_button
                     halign: "center"
                     valign: "top"
-                    text: "TokenId"
+                    text: ""
+
 
         AnchorLayout:
             anchor_x: "center"
             anchor_y: "center"
             size_hint: (1, .4)
             
+
             GridLayout:
                 orientation: "vertical"
                 size_hint: (1, 1)
@@ -167,12 +190,11 @@
                     text: "Amount of players"
 
                 Slider:
-
                     id: players_amount
                     max: 10
                     min: 5
                     step: 1
-                    on_value: root.my_value(self, value)
+                    on_value: root.my_value(players_amount.value)
                         
                 Label:
                     size_hint: (.2, .2)
@@ -182,6 +204,7 @@
                     size_hint: (.2, .2)
                     text: "Amount of Spy"
 
+                
                 BoxLayout:
                     orientation: "horizontal"
                     size_hint: (.8, .4)
@@ -193,7 +216,8 @@
                         on_press: root.delete_spy()
 
                     Label:
-                        text: str(root.spy_amount)
+                        id: lbl_spy
+                        text: '1'
 
                     Button:
                         halign: "center"
@@ -204,17 +228,25 @@
             anchor_x: "center"
             anchor_y: "center"
             size_hint:(1, .3)
-            BoxLayout:
-                size_hint:(.5, .7)
+            
+            GridLayout:
+                size_hint:(.5, .5)
+                cols: 2
+                spacing : 20
                 Button:
-                    size_hint:(.3,.4)
+                    size_hint:(.3,.2)
                     text:"Play"
-                    on_press: root.manager.current = "_fifth_screen_"
-                    on_press: root.play()
+                    on_press: root.manager.current = "playground"
+
+                Button:
+                    size_hint:(.1,.2)
+                    text:"Apply"
+                    on_press: root.appear_token()
 
 
-<FourthScreen>:
-    name: '_fourth_screen_'
+
+<ConnectScreen>:
+    name: 'connect'
     token: token_id
     AnchorLayout:
         anchor_x: "left"
@@ -225,7 +257,7 @@
             valign: "middle"
             text: "Back"
             size_hint: (.1, .1)
-            on_press: root.manager.current = "_first_screen_"
+            on_press: root.manager.current = "main"
 
     AnchorLayout:
         anchor_x: "center"
@@ -253,11 +285,16 @@
                 halign: "center"
                 valign: "top"
                 text: "Enter Game"
-                on_press: root.print_token(root.token.text)
+                on_press: root.enter_game(root.token.text)
+                on_press: root.manager.current = "playground"
 
-
-<FifthScreen>:
-    name: '_fifth_screen_'
+<PlaygroundScreen>:
+    name: 'playground'
+    on_enter : root.enter_screen()
+    lcl : root.locations
+    grid : grid
+    role_layout : role_layout
+    
 
     BoxLayout:
         orientation: "vertical"
@@ -265,103 +302,26 @@
         AnchorLayout:
             anchor_x: "center"
             anchor_y: "bottom"
-            size_hint: (1, .3)
+            size_hint: (1, .2)
+            id: role_layout
+            role_popup : role_popup
 
-            Button:     
-                size_hint: (0.2, 0.4)           
+            MDFillRoundFlatButton:
+                id: role_popup     
+                size_hint: (0.2, 0.5)           
                 halign: "center"
                 valign: "top"
                 text: "Role"
+                icon: "language-python"
                 on_press: root.rolePopup()
+
 
         AnchorLayout:
             anchor_x: "center"
             anchor_y: "center"
 
             GridLayout:
+                id: grid
                 cols: 2
-                size_hint: (1, .7)
-                spacing: 15
-
-                MDRaisedButton:               
-                    halign: "center"
-                    valign: "top"
-                    text: "Location"
-
-                MDRaisedButton:        
-                    halign: "center"
-                    valign: "top"
-                    text: "Location"
-                
-                MDRaisedButton:        
-                    halign: "center"
-                    valign: "top"
-                    text: "Location"
-
-                MDRaisedButton:        
-                    halign: "center"
-                    valign: "top"
-                    text: "Location"
-
-                MDRaisedButton:        
-                    halign: "center"
-                    valign: "top"
-                    text: "Location"
-
-                MDRaisedButton:        
-                    halign: "center"
-                    valign: "top"
-                    text: "Location"
-
-                MDRaisedButton:        
-                    halign: "center"
-                    valign: "top"
-                    text: "Location"
-
-                MDRaisedButton:        
-                    halign: "center"
-                    valign: "top"
-                    text: "Location"
-
-                MDRaisedButton:        
-                    halign: "center"
-                    valign: "top"
-                    text: "Location"
-
-                MDRaisedButton:        
-                    halign: "center"
-                    valign: "top"
-                    text: "Location"
-
-                MDRaisedButton:        
-                    halign: "center"
-                    valign: "top"
-                    text: "Location"
-
-                MDRaisedButton:        
-                    halign: "center"
-                    valign: "top"
-                    text: "Location"
-
-                MDRaisedButton:        
-                    halign: "center"
-                    valign: "top"
-                    text: "Location"
-
-                MDRaisedButton:        
-                    halign: "center"
-                    valign: "top"
-                    text: "Location"
-
-                MDRaisedButton:        
-                    halign: "center"
-                    valign: "top"
-                    text: "Location"
-
-                MDRaisedButton:
-                    halign: "center"
-                    valign: "top"
-                    text: "Location"
-
-
-
+                size_hint: (.7, .6)
+                spacing: 10

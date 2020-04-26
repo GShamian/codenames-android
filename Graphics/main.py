@@ -1,114 +1,111 @@
-import kivy 
+import kivy
+import Global
 import client
 from kivy import *
 from io import open
 from kivy.app import App 
-from kivy.uix.button import Button
+from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.uix.gridlayout import GridLayout 
 from kivy.uix.label import Label 
-from kivy.lang import Builder
 from kivy.uix.popup import Popup
-from kivy.clock import Clock
-#from kivy.properties import ObjectProperty, NumericProperty, StringProperty
-from kivy.uix.screenmanager import ScreenManager, Screen
-from kivy.uix.textinput import TextInput
-from kivymd.toast.kivytoast import toast
 from kivymd.theming import ThemeManager
+from kivy.uix.button import Button
 from kivymd.app import MDApp
 
+class ScreenManagement(ScreenManager):
+    create_scrn = kivy.properties.ObjectProperty(None)
 
+class MainScreen(Screen):
+    def isAdmin_change(self, flag):
+        Global.isAdmin = flag
 
-class FirstScreen(Screen):
+class OptionsScreen(Screen):
     pass
 
+class CreateLobbyScreen(Screen):
+    playground_screen = 0
+    label_spyamount = kivy.properties.ObjectProperty(None)
 
-class SecondScreen(Screen):
-    pass
-
-class ThirdScreen(Screen):
-
-    spy_amount = kivy.properties.NumericProperty(0)
-    players_amount = kivy.properties.NumericProperty(0)
-
+    def appear_token(self):
+        Global.data = client.createLobby(Global.players_amount, Global.spy_amount)
+        Global.token = Global.data[0]
+        self.token_layout.token_button.text = Global.token
+        
     def add_spy(self):
-        if(self.spy_amount == 4):
-            self.spy_amount = 0
-        self.spy_amount += 1
-        print(self.spy_amount)
+        if(Global.spy_amount == 4):
+            Global.spy_amount = 0
+        Global.spy_amount += 1
+        self.ids.lbl_spy.text = str(Global.spy_amount)
+        print(Global.spy_amount)
 
     def delete_spy(self):
-        if(self.spy_amount == 0):
-            self.spy_amount = 1
-        self.spy_amount -= 1
-        print(self.spy_amount)
+        if(Global.spy_amount == 0):
+            Global.spy_amount = 1
+        Global.spy_amount -= 1
+        self.ids.lbl_spy.text = str(Global.spy_amount)
+        print(Global.spy_amount)
 
     def my_value(self, value):
-        self.players_amount = value
+        Global.players_amount = value
 
-    def play(self):
-        client.createLobby(self.players_amount, self.spy_amount)
-    pass
-
-class FourthScreen(Screen):
+class ConnectScreen(Screen):
     token_code = kivy.properties.StringProperty('')
 
-    def print_token(self, tokdef = ''):
+    def enter_game(self, tokdef = ''):
         self.token_code = tokdef
         if(self.token_code != ''):
-            print(self.get_token())
+            Global.data = client.connect(self.get_token())
 
     def get_token(self):
         return self.token_code
-        
     pass
 
-class FifthScreen(Screen):
+class PlaygroundScreen(Screen):
+    locations = []
+    role = ""
+    key_location = ""
+
+    def enter_screen(self):
+        if(Global.isAdmin == False):
+            self.role = Global.data[0]
+            self.key_location = Global.data[1]
+            self.locations = Global.data[2]
+        else:
+            self.role = Global.data[1]
+            self.key_location = Global.data[2]
+            self.locations = Global.data[3]
+        for i in range(16):
+            self.grid.add_widget(Button(text=self.locations[i]))
 
     def rolePopup(self): 
-          
-        layout = GridLayout(cols = 1, padding = 10) 
-        popupLabel = Label(text = "Role: ") 
-        popupLabel2 = Label(text = "Location: ") 
+        layout = GridLayout(cols = 2, padding = 10) 
+        label__role_text = Label(text = "Role: ") 
+        label_role = Label(text = self.role.upper()) 
+        label__location_text = Label(text = "Location: ") 
+        label__location = Label(text = self.key_location.upper()) 
   
-        layout.add_widget(popupLabel) 
-        layout.add_widget(popupLabel2)       
+        layout.add_widget(label__role_text) 
+        layout.add_widget(label_role)
+        if(self.role == 'peaceful'):
+            layout.add_widget(label__location_text)
+            layout.add_widget(label__location)
   
         popup = Popup(title ='Role', 
                       content = layout, 
-                      size_hint =(None, None), size =(200, 200))   
+                      size_hint =(None, None), size =(250, 200))   
         popup.open()
-    pass
-
-
-class RoleScreen(Screen):
-    pass
 
 
 class SwitchingScreenApp(MDApp):
-    screen_manager = kivy.properties.ObjectProperty(None)
-
     def __init__(self, **kwargs):
         self.title = "SpyFall"
         self.theme_cls.theme_style = "Dark"
+        self.theme_cls.primary_palette = "BlueGray"
         super().__init__(**kwargs)
 
     def build(self):
-        SwitchingScreenApp.screen_manager = ScreenManager()
-        
-        welcome_screen = FirstScreen(name="_first_screen_")
-        options_screen = SecondScreen(name="_second_screen_")
-        create_screen = ThirdScreen(name="_third_screen_")
-        connection_screen = FourthScreen(name="_fourth_screen_")
-        playground_screen = FifthScreen(name="_fifth_screen_")
-        
-        self.screen_manager.add_widget(welcome_screen)
-        self.screen_manager.add_widget(options_screen)
-        self.screen_manager.add_widget(create_screen)
-        self.screen_manager.add_widget(connection_screen)
-        self.screen_manager.add_widget(playground_screen)
-        return self.screen_manager
+        return ScreenManagement()
 
 if __name__ == "__main__":
-    
     SwitchingScreenApp().run()
     
