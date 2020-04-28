@@ -11,6 +11,10 @@ from kivy.uix.popup import Popup
 from kivymd.theming import ThemeManager
 from kivy.uix.button import Button
 from kivymd.app import MDApp
+from kivy.core.audio import SoundLoader
+
+
+Global.sound1.play()
 
 class ScreenManagement(ScreenManager):
     create_scrn = kivy.properties.ObjectProperty(None)
@@ -18,13 +22,26 @@ class ScreenManagement(ScreenManager):
 class MainScreen(Screen):
     def isAdmin_change(self, flag):
         Global.isAdmin = flag
+    def push_button_sound(self):
+        Global.sound2.play()
 
 class OptionsScreen(Screen):
-    pass
+    def push_button_sound(self):
+        Global.sound2.play()
+
+    def change_music_volume(self, value):
+        Global.sound1.volume = value/10
+
+    def change_sound_of_push_volume(self, value):
+        Global.sound2.volume = value/10
+    
 
 class CreateLobbyScreen(Screen):
     playground_screen = 0
     label_spyamount = kivy.properties.ObjectProperty(None)
+
+    def push_button_sound(self):
+        Global.sound2.play()
 
     def appear_token(self):
         Global.data = client.createLobby(Global.players_amount, Global.spy_amount)
@@ -51,6 +68,9 @@ class CreateLobbyScreen(Screen):
 class ConnectScreen(Screen):
     token_code = kivy.properties.StringProperty('')
 
+    def push_button_sound(self):
+        Global.sound2.play()    
+
     def enter_game(self, tokdef = ''):
         self.token_code = tokdef
         if(self.token_code != ''):
@@ -64,6 +84,9 @@ class PlaygroundScreen(Screen):
     locations = []
     role = ""
     key_location = ""
+
+    def push_button_sound(self):
+        Global.sound2.play()
 
     def enter_screen(self):
         if(Global.isAdmin == False):

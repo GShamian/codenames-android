@@ -45,10 +45,12 @@
                         text: "Create Lobby"
                         on_press: root.manager.current = "createlobby"
                         on_press: root.isAdmin_change(True)
+                        on_press: root.push_button_sound()
                     Button:
                         text: "Connect"
                         on_press: root.manager.current = "connect"
                         on_press: root.isAdmin_change(False)
+                        on_press: root.push_button_sound()
 
     AnchorLayout:
         anchor_x: "right"
@@ -64,6 +66,7 @@
                 valign: "middle"
                 text: "Settings"
                 on_press: root.manager.current = "options"
+                on_press: root.push_button_sound()
 
             Button:
                 halign: "center"
@@ -89,6 +92,7 @@
                 valign: "middle"
                 text: "Back"
                 on_press: root.manager.current = "main"
+                on_press: root.push_button_sound()
 
 
     AnchorLayout:
@@ -103,17 +107,19 @@
             cols: 3
 
             Label:
-                text: "Sound Volume"
+                text: "Music Volume"
 
             Slider:
-                id: sound_volume
+                id: music_volume
+                value: 10
                 max: 10
-                min: 1
+                min: 0
                 step: 1
+                on_value: root.change_music_volume(music_volume.value)
                 
             Label:
                 size_hint: (0.1, 0.1)
-                text: str(sound_volume.value)
+                text: str(music_volume.value)
 
             Label:
                 size_hint: (0.1, 0.1)
@@ -121,9 +127,11 @@
 
             Slider:
                 id: effects_volume
+                value: 10
                 max: 10
-                min: 1
+                min: 0
                 step: 1
+                on_value: root.change_sound_of_push_volume(effects_volume.value)
                 
             Label:
                 text: str(effects_volume.value)
@@ -147,6 +155,7 @@
                 text: "Back"
                 size_hint: (.2, .5)
                 on_press: root.manager.current = "main"
+                on_press: root.push_button_sound()
 
         AnchorLayout:
             anchor_x: "center"
@@ -171,6 +180,7 @@
                     halign: "center"
                     valign: "top"
                     text: ""
+                    on_press: root.push_button_sound()
 
 
         AnchorLayout:
@@ -214,6 +224,7 @@
                         valign: "middle"
                         text: "-1"
                         on_press: root.delete_spy()
+                        on_press: root.push_button_sound()
 
                     Label:
                         id: lbl_spy
@@ -224,6 +235,7 @@
                         valign: "middle"
                         text: "+1"
                         on_press: root.add_spy()
+                        on_press: root.push_button_sound()
         AnchorLayout:
             anchor_x: "center"
             anchor_y: "center"
@@ -237,11 +249,13 @@
                     size_hint:(.3,.2)
                     text:"Play"
                     on_press: root.manager.current = "playground"
+                    on_press: root.push_button_sound()
 
                 Button:
                     size_hint:(.1,.2)
                     text:"Apply"
                     on_press: root.appear_token()
+                    on_press: root.push_button_sound()
 
 
 
@@ -258,6 +272,7 @@
             text: "Back"
             size_hint: (.1, .1)
             on_press: root.manager.current = "main"
+            on_press: root.push_button_sound()
 
     AnchorLayout:
         anchor_x: "center"
@@ -287,6 +302,7 @@
                 text: "Enter Game"
                 on_press: root.enter_game(root.token.text)
                 on_press: root.manager.current = "playground"
+                on_press: root.push_button_sound()
 
 <PlaygroundScreen>:
     name: 'playground'
@@ -314,6 +330,7 @@
                 text: "Role"
                 icon: "language-python"
                 on_press: root.rolePopup()
+                on_press: root.push_button_sound()
 
 
         AnchorLayout:
