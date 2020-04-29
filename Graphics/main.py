@@ -1,6 +1,9 @@
 import kivy
 import Global
 import client
+import time
+import threading
+import time
 from kivy import *
 from io import open
 from kivy.app import App 
@@ -14,26 +17,26 @@ from kivymd.app import MDApp
 from kivy.core.audio import SoundLoader
 
 
-Global.sound1.play()
+Global.background_music.play()
 
 class ScreenManagement(ScreenManager):
-    create_scrn = kivy.properties.ObjectProperty(None)
+    pass
 
 class MainScreen(Screen):
     def isAdmin_change(self, flag):
         Global.isAdmin = flag
     def push_button_sound(self):
-        Global.sound2.play()
+        Global.button_sound.play()
 
 class OptionsScreen(Screen):
     def push_button_sound(self):
-        Global.sound2.play()
+        Global.button_sound.play()
 
     def change_music_volume(self, value):
-        Global.sound1.volume = value/10
+        Global.background_music.volume = value/10
 
     def change_sound_of_push_volume(self, value):
-        Global.sound2.volume = value/10
+        Global.button_sound.volume = value/10
     
 
 class CreateLobbyScreen(Screen):
@@ -41,7 +44,7 @@ class CreateLobbyScreen(Screen):
     label_spyamount = kivy.properties.ObjectProperty(None)
 
     def push_button_sound(self):
-        Global.sound2.play()
+        Global.button_sound.play()
 
     def appear_token(self):
         Global.data = client.createLobby(Global.players_amount, Global.spy_amount)
@@ -69,12 +72,23 @@ class ConnectScreen(Screen):
     token_code = kivy.properties.StringProperty('')
 
     def push_button_sound(self):
-        Global.sound2.play()    
+        Global.button_sound.play()    
 
     def enter_game(self, tokdef = ''):
         self.token_code = tokdef
         if(self.token_code != ''):
             Global.data = client.connect(self.get_token())
+            Global.token = self.get_token()
+            if(Global.data == 'invalid token'):
+                layout = GridLayout(cols = 1, padding = 15, spacing = 15) 
+                label__text = Label(text = 'Invalid Token.\nTry Again') 
+                layout.add_widget(label__text) 
+                popup = Popup(title ='Error', 
+                             content = layout, 
+                             size_hint =(None, None), size =(200, 100))   
+                popup.open()
+            else:
+                self.manager.current = 'playground'
 
     def get_token(self):
         return self.token_code
@@ -82,11 +96,11 @@ class ConnectScreen(Screen):
 
 class PlaygroundScreen(Screen):
     locations = []
-    role = ""
-    key_location = ""
+    role = ''
+    key_location = ''
 
     def push_button_sound(self):
-        Global.sound2.play()
+        Global.button_sound.play()
 
     def enter_screen(self):
         if(Global.isAdmin == False):
@@ -98,13 +112,51 @@ class PlaygroundScreen(Screen):
             self.key_location = Global.data[2]
             self.locations = Global.data[3]
         for i in range(16):
-            self.grid.add_widget(Button(text=self.locations[i]))
+            my_button = Button(text=self.locations[i], on_press=self.location_press)
+            self.grid.add_widget(my_button)
+        print(self.key_location)
+        #self.game_process()
+
+    def game_process(self):
+        gameCheck_status = threading.Thread(target=self.gameOver_update, daemon=True)
+        gameCheck_status.start()
+
+        #gameCheck_status.join()
+        print('after thread')
+        #self.gameOver_popup
+        #time.sleep(4)
+        #self.manager.current = 'main'
+
+    def gameOver_update(self):
+        print('start')
+        Global.gameOver = client.checkGameStatus(Global.token)
+        time.sleep(2)
+        if(Global.gameOver == 'false'):
+            self.gameOver_popup
+        else:
+            self.gameOver_update()
+        print('end')
+        
+    def location_press(self, instance):
+        client.checkLocation(Global.token, instance.text)
+        print('was pressed')
+
+    def gameOver_popup(self):
+        layout = GridLayout(cols = 1, padding = 10) 
+        label_gameOver = Label(text = 'Game Over') 
+       
+        layout.add_widget(label_gameOver) 
+ 
+        popup = Popup(title ='d', 
+                      content = layout, 
+                      size_hint =(None, None), size =(250, 200))   
+        popup.open()
 
     def rolePopup(self): 
         layout = GridLayout(cols = 2, padding = 10) 
-        label__role_text = Label(text = "Role: ") 
+        label__role_text = Label(text = 'Role: ') 
         label_role = Label(text = self.role.upper()) 
-        label__location_text = Label(text = "Location: ") 
+        label__location_text = Label(text = 'Location: ') 
         label__location = Label(text = self.key_location.upper()) 
   
         layout.add_widget(label__role_text) 
@@ -117,18 +169,21 @@ class PlaygroundScreen(Screen):
                       content = layout, 
                       size_hint =(None, None), size =(250, 200))   
         popup.open()
+        self.game_process()
+
+        
 
 
 class SwitchingScreenApp(MDApp):
     def __init__(self, **kwargs):
-        self.title = "SpyFall"
-        self.theme_cls.theme_style = "Dark"
-        self.theme_cls.primary_palette = "BlueGray"
+        self.title = 'SpyFall'
+        self.theme_cls.theme_style = 'Dark'
+        self.theme_cls.primary_palette = 'BlueGray'
         super().__init__(**kwargs)
 
     def build(self):
         return ScreenManagement()
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     SwitchingScreenApp().run()
     
