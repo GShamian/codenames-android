@@ -5,6 +5,7 @@
 <ScreenManagement>:
     transition: FadeTransition()
     MainScreen:
+        id: main_screen
     OptionsScreen:
     CreateLobbyScreen:
         id: create_screen
@@ -137,6 +138,7 @@
 <CreateLobbyScreen>:
     name: 'createlobby'
     label_spyamount : lbl_spy
+    play_button_layout : play_button_layout
     token_layout : token_layout
 
     BoxLayout:
@@ -235,19 +237,23 @@
                         on_press: root.add_spy()
                         on_press: root.push_button_sound()
         AnchorLayout:
+            id: play_button_layout
             anchor_x: 'center'
             anchor_y: 'center'
             size_hint:(1, .3)
+            play_button : play_button
             
             GridLayout:
                 size_hint:(.5, .5)
                 cols: 2
                 spacing : 20
                 Button:
+                    id: play_button
                     size_hint:(.3,.2)
                     text:'Play'
                     on_press: root.manager.current = 'playground'
                     on_press: root.push_button_sound()
+                    disabled : True
 
                 Button:
                     size_hint:(.1,.2)

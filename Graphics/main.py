@@ -50,6 +50,7 @@ class CreateLobbyScreen(Screen):
         Global.data = client.createLobby(Global.players_amount, Global.spy_amount)
         Global.token = Global.data[0]
         self.token_layout.token_button.text = Global.token
+        self.play_button_layout.play_button.disabled = False
         
     def add_spy(self):
         if(Global.spy_amount == 4):
@@ -98,6 +99,7 @@ class PlaygroundScreen(Screen):
     locations = []
     role = ''
     key_location = ''
+    scrn = ''
 
     def push_button_sound(self):
         Global.button_sound.play()
@@ -115,27 +117,17 @@ class PlaygroundScreen(Screen):
             my_button = Button(text=self.locations[i], on_press=self.location_press)
             self.grid.add_widget(my_button)
         print(self.key_location)
-        #self.game_process()
 
     def game_process(self):
         gameCheck_status = threading.Thread(target=self.gameOver_update, daemon=True)
         gameCheck_status.start()
-
-        #gameCheck_status.join()
         print('after thread')
-        #self.gameOver_popup
-        #time.sleep(4)
-        #self.manager.current = 'main'
 
     def gameOver_update(self):
-        print('start')
-        Global.gameOver = client.checkGameStatus(Global.token)
-        time.sleep(2)
-        if(Global.gameOver == 'false'):
-            self.gameOver_popup
-        else:
-            self.gameOver_update()
-        print('end')
+        while(Global.gameOver == 'true'):
+            Global.gameOver = client.checkGameStatus(Global.token)
+            time.sleep(2)
+        self.gameOver_popup()
         
     def location_press(self, instance):
         client.checkLocation(Global.token, instance.text)
@@ -147,10 +139,14 @@ class PlaygroundScreen(Screen):
        
         layout.add_widget(label_gameOver) 
  
-        popup = Popup(title ='d', 
+        popup = Popup(title ='Congratz', 
                       content = layout, 
                       size_hint =(None, None), size =(250, 200))   
+        popup.bind(on_press=self.goto_Main)
         popup.open()
+
+    def goto_Main(self):
+        self.manager.current = 'main'
 
     def rolePopup(self): 
         layout = GridLayout(cols = 2, padding = 10) 
