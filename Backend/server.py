@@ -78,14 +78,14 @@ def connectToLobby(data):
     connection.send(pickle.dumps(role_keyLocation_locations))
 
 def isCorrectLocation(data):
-    print(data[1] in tokens, ''.join(data[0] + ' ' + data[1]) in key_locations, tokens.index(data[1]) == key_locations.index(''.join(data[0] + ' ' + data[1])))
-    if data[1] in tokens and ''.join(data[0] + ' ' + data[1]) in key_locations and tokens.index(data[1]) == key_locations.index(''.join(data[0] + ' ' + data[1])):
+    if data[1] in tokens:
         game_statuses[tokens.index(data[1])] = 'false'
+    if data[1] in tokens and ''.join(data[0] + ' ' + data[1]) in key_locations and tokens.index(data[1]) == key_locations.index(''.join(data[0] + ' ' + data[1])):
         connection.send(bytes('true', encoding='UTF-8'))
     else:
         connection.send(bytes('false', encoding='UTF-8'))
 
-def isGameOver(data):
+def checkGameStatuse(data):
     connection.send(bytes(game_statuses[tokens.index(data[1])], encoding='UTF-8'))
 
 # Слушаем запросы
@@ -108,7 +108,7 @@ while True:
     
     # Проверка статуса игры
     elif data[0] == 'knock-knock':
-        isGameOver(data)
+        checkGameStatuse(data)
 
     # Проверка на корректность токена
     elif ''.join(data) not in tokens:
