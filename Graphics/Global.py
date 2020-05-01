@@ -4,6 +4,9 @@ players_amount = 5
 data = []
 token = ''
 isAdmin = False
-sound1 = SoundLoader.load('Adele - Skyfall.mp3')
-sound2 = SoundLoader.load('Sound Ideas - Metal Light Switch Button Push Off (mp3cut.net).mp3')
+gameOver = 'true'
+background_music = SoundLoader.load('Adele - Skyfall.mp3')
+background_music.volume = 0
+button_sound = SoundLoader.load('Sound Ideas - Metal Light Switch Button Push Off (mp3cut.net).mp3')
+button_sound.volume = 0.1
 

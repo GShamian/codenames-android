@@ -4,7 +4,6 @@
 
 <ScreenManagement>:
     transition: FadeTransition()
-    create_screen: create_screen
     MainScreen:
         id: main_screen
     OptionsScreen:
@@ -17,15 +16,15 @@
 <MainScreen>:
     name: 'main'
     AnchorLayout:
-        anchor_x: "center"
-        anchor_y: "center"
+        anchor_x: 'center'
+        anchor_y: 'center'
 
         AnchorLayout:
-            anchor_x: "center"
-            anchor_y: "center"
+            anchor_x: 'center'
+            anchor_y: 'center'
 
             GridLayout:
-                orientation: "vertical"
+                orientation: 'vertical'
                 size_hint: (0.3, 0.5)
                 spacing: 50
                 cols: 1
@@ -37,41 +36,41 @@
                     allow_stretch: True
 
                 BoxLayout:
-                    orientation: "vertical"
+                    orientation: 'vertical'
                     size_hint: (1, 0.2)
                     spacing: 20
 
                     Button:
-                        text: "Create Lobby"
-                        on_press: root.manager.current = "createlobby"
+                        text: 'Create Lobby'
+                        on_press: root.manager.current = 'createlobby'
                         on_press: root.isAdmin_change(True)
                         on_press: root.push_button_sound()
                     Button:
-                        text: "Connect"
-                        on_press: root.manager.current = "connect"
+                        text: 'Connect'
+                        on_press: root.manager.current = 'connect'
                         on_press: root.isAdmin_change(False)
                         on_press: root.push_button_sound()
 
     AnchorLayout:
-        anchor_x: "right"
-        anchor_y: "bottom"
+        anchor_x: 'right'
+        anchor_y: 'bottom'
             
         BoxLayout:
-            orientation: "vertical"
+            orientation: 'vertical'
             size_hint: (0.2, 0.1)
             spacing: 10
 
             Button:
-                halign: "center"
-                valign: "middle"
-                text: "Settings"
-                on_press: root.manager.current = "options"
+                halign: 'center'
+                valign: 'middle'
+                text: 'Settings'
+                on_press: root.manager.current = 'options'
                 on_press: root.push_button_sound()
 
             Button:
-                halign: "center"
-                valign: "middle"
-                text: "X"            
+                halign: 'center'
+                valign: 'middle'
+                text: 'X'            
     
 
 
@@ -79,39 +78,39 @@
     name: 'options'
 
     AnchorLayout:
-        anchor_x: "left"
-        anchor_y: "top"
+        anchor_x: 'left'
+        anchor_y: 'top'
 
         BoxLayout:
-            orientation: "vertical"
+            orientation: 'vertical'
             size_hint: (0.1, 0.1)
             spacing: 10
 
             Button:
-                halign: "center"
-                valign: "middle"
-                text: "Back"
-                on_press: root.manager.current = "main"
+                halign: 'center'
+                valign: 'middle'
+                text: 'Back'
+                on_press: root.manager.current = 'main'
                 on_press: root.push_button_sound()
 
 
     AnchorLayout:
-        anchor_x: "center"
-        anchor_y: "center"
+        anchor_x: 'center'
+        anchor_y: 'center'
 
         GridLayout:
-            orientation: "vertical"
+            orientation: 'vertical'
             size_hint: (0.8, 0.3)
             spacing: 0
             padding: 0
             cols: 3
 
             Label:
-                text: "Music Volume"
+                text: 'Music Volume'
 
             Slider:
                 id: music_volume
-                value: 10
+                value: 1
                 max: 10
                 min: 0
                 step: 1
@@ -123,11 +122,11 @@
 
             Label:
                 size_hint: (0.1, 0.1)
-                text: "Effects Volume"
+                text: 'Effects Volume'
 
             Slider:
                 id: effects_volume
-                value: 10
+                value: 1
                 max: 10
                 min: 0
                 step: 1
@@ -139,31 +138,32 @@
 <CreateLobbyScreen>:
     name: 'createlobby'
     label_spyamount : lbl_spy
+    play_button_layout : play_button_layout
     token_layout : token_layout
 
     BoxLayout:
-        orientation: "vertical"
+        orientation: 'vertical'
 
         AnchorLayout:
-            anchor_x: "left"
-            anchor_y: "center"
+            anchor_x: 'left'
+            anchor_y: 'center'
             size_hint: (1, .1)
 
             Button:
-                halign: "center"
-                valign: "middle"
-                text: "Back"
+                halign: 'center'
+                valign: 'middle'
+                text: 'Back'
                 size_hint: (.2, .5)
-                on_press: root.manager.current = "main"
+                on_press: root.manager.current = 'main'
                 on_press: root.push_button_sound()
 
         AnchorLayout:
-            anchor_x: "center"
-            anchor_y: "center"
+            anchor_x: 'center'
+            anchor_y: 'center'
             size_hint: (1, .2)
             
             GridLayout:
-                orientation: "vertical"
+                orientation: 'vertical'
                 size_hint: (.6, .7)
                 spacing: 30
                 padding: 0
@@ -173,31 +173,31 @@
 
                 Label:
                     id: token
-                    text: "Token" 
+                    text: 'Token' 
 
                 Button:                
                     id: token_button
-                    halign: "center"
-                    valign: "top"
-                    text: ""
+                    halign: 'center'
+                    valign: 'top'
+                    text: ''
                     on_press: root.push_button_sound()
 
 
         AnchorLayout:
-            anchor_x: "center"
-            anchor_y: "center"
+            anchor_x: 'center'
+            anchor_y: 'center'
             size_hint: (1, .4)
             
 
             GridLayout:
-                orientation: "vertical"
+                orientation: 'vertical'
                 size_hint: (1, 1)
                 spacing: 0
                 padding: 0
                 cols: 3
 
                 Label:
-                    text: "Amount of players"
+                    text: 'Amount of players'
 
                 Slider:
                     id: players_amount
@@ -212,17 +212,17 @@
 
                 Label:
                     size_hint: (.2, .2)
-                    text: "Amount of Spy"
+                    text: 'Amount of Spy'
 
                 
                 BoxLayout:
-                    orientation: "horizontal"
+                    orientation: 'horizontal'
                     size_hint: (.8, .4)
                         
                     Button:
-                        halign: "center"
-                        valign: "middle"
-                        text: "-1"
+                        halign: 'center'
+                        valign: 'middle'
+                        text: '-1'
                         on_press: root.delete_spy()
                         on_press: root.push_button_sound()
 
@@ -231,29 +231,33 @@
                         text: '1'
 
                     Button:
-                        halign: "center"
-                        valign: "middle"
-                        text: "+1"
+                        halign: 'center'
+                        valign: 'middle'
+                        text: '+1'
                         on_press: root.add_spy()
                         on_press: root.push_button_sound()
         AnchorLayout:
-            anchor_x: "center"
-            anchor_y: "center"
+            id: play_button_layout
+            anchor_x: 'center'
+            anchor_y: 'center'
             size_hint:(1, .3)
+            play_button : play_button
             
             GridLayout:
                 size_hint:(.5, .5)
                 cols: 2
                 spacing : 20
                 Button:
+                    id: play_button
                     size_hint:(.3,.2)
-                    text:"Play"
-                    on_press: root.manager.current = "playground"
+                    text:'Play'
+                    on_press: root.manager.current = 'playground'
                     on_press: root.push_button_sound()
+                    disabled : True
 
                 Button:
                     size_hint:(.1,.2)
-                    text:"Apply"
+                    text:'Apply'
                     on_press: root.appear_token()
                     on_press: root.push_button_sound()
 
@@ -263,24 +267,24 @@
     name: 'connect'
     token: token_id
     AnchorLayout:
-        anchor_x: "left"
-        anchor_y: "top"
+        anchor_x: 'left'
+        anchor_y: 'top'
 
         Button:
-            halign: "center"
-            valign: "middle"
-            text: "Back"
+            halign: 'center'
+            valign: 'middle'
+            text: 'Back'
             size_hint: (.1, .1)
-            on_press: root.manager.current = "main"
+            on_press: root.manager.current = 'main'
             on_press: root.push_button_sound()
 
     AnchorLayout:
-        anchor_x: "center"
-        anchor_y: "center"
+        anchor_x: 'center'
+        anchor_y: 'center'
         size_hint: (1, .8)
         
         GridLayout:
-            orientation: "vertical"
+            orientation: 'vertical'
             size_hint: (.6, .7)
             spacing: 30
             padding: 0
@@ -288,20 +292,19 @@
 
             Label:
                 id: token
-                text: "Token" 
+                text: 'Token' 
 
             TextInput:
                 id: token_id
-                hint_text: "Enter Token"   
-                multiline: "false"
+                hint_text: 'Enter Token'   
+                multiline: 'false'
                 font_size: 30
 
             Button:                
-                halign: "center"
-                valign: "top"
-                text: "Enter Game"
+                halign: 'center'
+                valign: 'top'
+                text: 'Enter Game'
                 on_press: root.enter_game(root.token.text)
-                on_press: root.manager.current = "playground"
                 on_press: root.push_button_sound()
 
 <PlaygroundScreen>:
@@ -311,13 +314,12 @@
     grid : grid
     role_layout : role_layout
     
-
     BoxLayout:
-        orientation: "vertical"
+        orientation: 'vertical'
         
         AnchorLayout:
-            anchor_x: "center"
-            anchor_y: "bottom"
+            anchor_x: 'center'
+            anchor_y: 'bottom'
             size_hint: (1, .2)
             id: role_layout
             role_popup : role_popup
@@ -325,17 +327,17 @@
             MDFillRoundFlatButton:
                 id: role_popup     
                 size_hint: (0.2, 0.5)           
-                halign: "center"
-                valign: "top"
-                text: "Role"
-                icon: "language-python"
+                halign: 'center'
+                valign: 'top'
+                text: 'Role'
+                icon: 'language-python'
                 on_press: root.rolePopup()
                 on_press: root.push_button_sound()
 
 
         AnchorLayout:
-            anchor_x: "center"
-            anchor_y: "center"
+            anchor_x: 'center'
+            anchor_y: 'center'
 
             GridLayout:
                 id: grid
