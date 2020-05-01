@@ -6,7 +6,7 @@ token = ''
 isAdmin = False
 gameOver = 'true'
 background_music = SoundLoader.load('Adele - Skyfall.mp3')
-background_music.volume = 0
+background_music.volume = 0.05
 button_sound = SoundLoader.load('Sound Ideas - Metal Light Switch Button Push Off (mp3cut.net).mp3')
 button_sound.volume = 0.1
 

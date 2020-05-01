@@ -15,125 +15,251 @@
 
 <MainScreen>:
     name: 'main'
-    AnchorLayout:
-        anchor_x: 'center'
-        anchor_y: 'center'
 
-        AnchorLayout:
-            anchor_x: 'center'
-            anchor_y: 'center'
+    Image:
+        source: 'Main Menu/background.png'
+        allow_stretch: True
 
-            GridLayout:
-                orientation: 'vertical'
-                size_hint: (0.3, 0.5)
-                spacing: 50
-                cols: 1
+    BoxLayout:
+        orientation: 'vertical'
+        size_hint: (1, 1)
 
-                Image:
-                    source: 'silver.jpg'
-                    size_hint_x: 1
-                    size_hint_y: 0.3
-                    allow_stretch: True
+        GridLayout:
+            orientation: 'vertical'
+            size_hint: (.85, 0.45)
+            spacing: 10
+            cols: 1
 
+            Image:
+                source: 'Main Menu/main_logo.png'
+                allow_stretch: True
+
+        # AnchorLayout:
+        #     anchor_x: 'center'
+        #     anchor_y: 'center'
+
+        GridLayout:
+            orientation: 'vertical'
+            size_hint: (1, 0.4)
+            spacing: 10
+            cols: 1
+
+            AnchorLayout:
+                anchor_x: 'center'
+                anchor_y: 'center'
+
+                GridLayout:
+                    orientation: 'vertical'
+                    size_hint: (0.7, 0.1)
+                    spacing: 10
+                    cols: 1
+
+                    Widget:
+                        id: Empty_Widget_Test
+
+                GridLayout:
+                    orientation: 'vertical'
+                    size_hint: (0.7, 0.8)
+                    spacing: 10
+                    cols: 1
+
+                    AnchorLayout:
+                        anchor_x: 'right'
+                        anchor_y: 'top'
+
+                        # Widget:
+                        #     id: Empty_Widget1
+                        #     size_hint_x: None
+                        #     width: 100
+
+                        # Widget:
+                        #     id: Empty_Widget2
+                        #     size_hint_x: None
+                        #     width: 100
+
+                        Button:
+                            background_normal: 'Main Menu/create_lobby_button.png'
+                            background_down: 'Main Menu/create_lobby_button.png'
+                            on_press: root.manager.current = 'createlobby'
+                            on_press: root.isAdmin_change(True)
+                            on_press: root.push_button_sound()
+                            size_hint: (None, None)
+                            size: (500, 170)
+
+                        # Widget:
+                        #     id: Empty_Widget3
+                        #     size_hint_x: None
+                        #     width: 100
+                    AnchorLayout:
+                        anchor_x: 'center'
+                        anchor_y: 'center'
+
+                        Button:
+                            background_normal: 'Main Menu/connect_lobby_button.png'
+                            background_down: 'Main Menu/connect_lobby_button.png'
+                            on_press: root.manager.current = 'connect'
+                            on_press: root.isAdmin_change(False)
+                            on_press: root.push_button_sound()
+                            size_hint: (None, None)
+                            size: (500, 170)
+
+                        # Widget:
+                        #     id: Empty_Widget4
+                        #     size_hint_x: None
+                        #     width: 100
+
+                    AnchorLayout:
+                        anchor_x: 'left'
+                        anchor_y: 'bottom'
+
+                        Button:
+                            background_normal: 'Main Menu/settings_button.png'
+                            background_down: 'Main Menu/settings_button.png'
+                            on_press: root.manager.current = 'options'
+                            on_press: root.push_button_sound()
+                            size_hint: (None, None)
+                            size: (500, 170)
+
+                        # Widget:
+                        #     id: Empty_Widget5
+                        #     size_hint_x: None
+                        #     width: 100
+
+                        # Widget:
+                        #     id: Empty_Widget6
+                        #     size_hint_x: None
+                        #     width: 100
+
+                GridLayout:
+                    orientation: 'vertical'
+                    size_hint: (0.7, 0.1)
+                    spacing: 10
+                    cols: 1
+
+                    Widget:
+                        id: Empty_Widget_Test
+
+                        
+        GridLayout:
+            orientation: 'vertical'
+            size_hint: (1, 0.15)
+            spacing: 10
+            cols: 1
+
+            AnchorLayout:
+                anchor_x: 'left'
+                anchor_y: 'bottom'
+                    
                 BoxLayout:
                     orientation: 'vertical'
-                    size_hint: (1, 0.2)
-                    spacing: 20
+                    size_hint: (0.15, .7)
+                    spacing: 10
 
                     Button:
-                        text: 'Create Lobby'
-                        on_press: root.manager.current = 'createlobby'
-                        on_press: root.isAdmin_change(True)
-                        on_press: root.push_button_sound()
-                    Button:
-                        text: 'Connect'
-                        on_press: root.manager.current = 'connect'
-                        on_press: root.isAdmin_change(False)
-                        on_press: root.push_button_sound()
-
-    AnchorLayout:
-        anchor_x: 'right'
-        anchor_y: 'bottom'
-            
-        BoxLayout:
-            orientation: 'vertical'
-            size_hint: (0.2, 0.1)
-            spacing: 10
-
-            Button:
-                halign: 'center'
-                valign: 'middle'
-                text: 'Settings'
-                on_press: root.manager.current = 'options'
-                on_press: root.push_button_sound()
-
-            Button:
-                halign: 'center'
-                valign: 'middle'
-                text: 'X'            
+                        background_normal: 'Main Menu/exit_button.png'
+                        background_down: 'Main Menu/exit_button.png'
+                        halign: 'center'
+                        valign: 'middle'         
     
 
 
 <OptionsScreen>:
     name: 'options'
 
-    AnchorLayout:
-        anchor_x: 'left'
-        anchor_y: 'top'
+    Image:
+        source: 'Options Menu/background_options.png'
+        allow_stretch: True
 
-        BoxLayout:
-            orientation: 'vertical'
-            size_hint: (0.1, 0.1)
-            spacing: 10
-
-            Button:
-                halign: 'center'
-                valign: 'middle'
-                text: 'Back'
-                on_press: root.manager.current = 'main'
-                on_press: root.push_button_sound()
-
-
-    AnchorLayout:
-        anchor_x: 'center'
-        anchor_y: 'center'
+    BoxLayout:
+        orientation: 'vertical'
 
         GridLayout:
             orientation: 'vertical'
-            size_hint: (0.8, 0.3)
-            spacing: 0
-            padding: 0
-            cols: 3
+            size_hint: (.5, .15)
+            cols: 1
 
-            Label:
-                text: 'Music Volume'
+            AnchorLayout:
+                anchor_x: 'left'
+                anchor_y: 'top'
 
-            Slider:
-                id: music_volume
-                value: 1
-                max: 10
-                min: 0
-                step: 1
-                on_value: root.change_music_volume(music_volume.value)
-                
-            Label:
-                size_hint: (0.1, 0.1)
-                text: str(music_volume.value)
+                BoxLayout:
+                    orientation: 'vertical'
+                    size_hint: (0.3, .5)
+                    spacing: 40
 
-            Label:
-                size_hint: (0.1, 0.1)
-                text: 'Effects Volume'
+                    Button:
+                        halign: 'center'
+                        valign: 'middle'
+                        background_normal: 'Options Menu/back_button.png'
+                        background_down: 'Options Menu/back_button.png'
+                        on_press: root.manager.current = 'main'
+                        on_press: root.push_button_sound()
 
-            Slider:
-                id: effects_volume
-                value: 1
-                max: 10
-                min: 0
-                step: 1
-                on_value: root.change_sound_of_push_volume(effects_volume.value)
-                
-            Label:
-                text: str(effects_volume.value)
+        GridLayout:
+            orientation: 'vertical'
+            size_hint: (1, .4)
+            cols: 1
+            
+            GridLayout:
+                orientation: 'vertical'
+                size_hint: (1, .25)
+                cols: 1
+
+                Image:
+                    source: 'Options Menu/music_volume_title.png'
+                    allow_stretch: True
+
+            GridLayout:
+                orientation: 'horizontal'
+                size_hint: (.7, .25)
+                cols: 1
+
+                Slider:
+                    id: music_volume
+                    cursor_image: 'Options Menu/slider_handler.png'
+                    background_horizontal: 'Options Menu/slider_line2.png'
+                    cursor_size: (80, 130)
+                    padding: 128
+                    value: 1
+                    max: 10
+                    min: 0
+                    step: 1
+                    on_value: root.change_music_volume(music_volume.value)
+
+            GridLayout:
+                orientation: 'vertical'
+                size_hint: (1, .25)
+                cols: 1
+
+                Image:
+                    source: 'Options Menu/effects_volume_title.png'
+                    allow_stretch: True
+
+            GridLayout:
+                orientation: 'horizontal'
+                size_hint: (.5, .25)
+                cols: 1
+
+                Slider:
+                    id: effects_volume
+                    cursor_image: 'Options Menu/slider_handler.png'
+                    background_horizontal: 'Options Menu/slider_line2.png'
+                    cursor_size: (80, 130)
+                    padding: 128
+                    value: 1
+                    max: 10
+                    min: 0
+                    step: 1
+                    on_value: root.change_sound_of_push_volume(effects_volume.value)
+
+        GridLayout:
+            orientation: 'vertical'
+            size_hint: (1, .3)
+            cols: 1
+
+            Widget:
+                id: Empty_Widget6
+
 
 <CreateLobbyScreen>:
     name: 'createlobby'
@@ -141,21 +267,26 @@
     play_button_layout : play_button_layout
     token_layout : token_layout
 
+    Image:
+        source: 'CreateLobby Menu/background3.png'
+        allow_stretch: True
+
     BoxLayout:
         orientation: 'vertical'
 
         AnchorLayout:
             anchor_x: 'left'
-            anchor_y: 'center'
-            size_hint: (1, .1)
+            anchor_y: 'top'
+            size_hint: (.5, .15)
 
             Button:
                 halign: 'center'
                 valign: 'middle'
-                text: 'Back'
-                size_hint: (.2, .5)
+                size_hint: (.3, .5)
                 on_press: root.manager.current = 'main'
                 on_press: root.push_button_sound()
+                background_normal: 'CreateLobby Menu/back_button.png'
+                background_down: 'CreateLobby Menu/back_button.png'
 
         AnchorLayout:
             anchor_x: 'center'
@@ -164,29 +295,31 @@
             
             GridLayout:
                 orientation: 'vertical'
-                size_hint: (.6, .7)
+                size_hint: (.6, .5)
                 spacing: 30
                 padding: 0
                 cols: 2
                 id: token_layout
                 token_button : token_button
 
-                Label:
+                Image:
                     id: token
-                    text: 'Token' 
+                    source: 'CreateLobby Menu/token_logo.png'
 
-                Button:                
+                Button:
+                    size_hint: (1, .7)
                     id: token_button
                     halign: 'center'
                     valign: 'top'
-                    text: ''
+                    background_normal: 'CreateLobby Menu/token_empty_logo.png'
+                    background_down: 'CreateLobby Menu/token_empty_logo.png'
                     on_press: root.push_button_sound()
 
 
         AnchorLayout:
             anchor_x: 'center'
             anchor_y: 'center'
-            size_hint: (1, .4)
+            size_hint: (1, .3)
             
 
             GridLayout:
@@ -194,118 +327,192 @@
                 size_hint: (1, 1)
                 spacing: 0
                 padding: 0
-                cols: 3
+                cols: 1
 
-                Label:
-                    text: 'Amount of players'
+                Image:
+                    size_hint: (1, .7)
+                    source: 'CreateLobby Menu/player_logo.png'
+                    allow_stretch: True
 
-                Slider:
-                    id: players_amount
-                    max: 10
-                    min: 5
-                    step: 1
-                    on_value: root.my_value(players_amount.value)
-                        
-                Label:
-                    size_hint: (.2, .2)
-                    text: str(players_amount.value)
 
-                Label:
-                    size_hint: (.2, .2)
-                    text: 'Amount of Spy'
-
-                
                 BoxLayout:
                     orientation: 'horizontal'
-                    size_hint: (.8, .4)
+                    id: players_amount_logo
+                    players_amount : players_amount
+                    
+                    Slider:
+                        id: players_amount
+                        max: 10
+                        min: 5
+                        step: 1
+                        cursor_size: (80, 130)
+                        cursor_image: 'Options Menu/slider_handler.png'
+                        background_horizontal: 'Options Menu/slider_line2.png'
+                        on_value: root.my_value(players_amount.value)
+                            
+                    Label:
+                        size_hint: (.4, 1)
+                        id: token
+                        font_size: 60
+                        text: str(players_amount.value)
+                        canvas.before:
+                            Rectangle:
+                                pos: self.center_x - 50, self.center_y - 50 # default size is 100x100       
+                                source: 'CreateLobby Menu/token_empty_logo.png'
+
+                BoxLayout:
+                    orientation: 'horizontal'
+                    size_hint: (.9, 1)
+                    padding: 20
+
+                    Image:
+                        size_hint: (.4, 1)
+                        source: 'CreateLobby Menu/spy_logo.png'
+                        allow_stretch: True
                         
                     Button:
+                        size_hint: (.2, 1)
                         halign: 'center'
                         valign: 'middle'
-                        text: '-1'
+                        background_normal: 'CreateLobby Menu/amount_button_minus.png'
+                        background_down: 'CreateLobby Menu/amount_button_minus.png'
                         on_press: root.delete_spy()
                         on_press: root.push_button_sound()
 
                     Label:
+                        size_hint: (.2, 1)
                         id: lbl_spy
+                        font_size: 60
                         text: '1'
+                        canvas.before:
+                            Rectangle:
+                                pos: self.center_x - 50, self.center_y - 50 # default size is 100x100       
+                                source: 'CreateLobby Menu/token_empty_logo.png'
 
                     Button:
+                        size_hint: (.2, 1)
                         halign: 'center'
                         valign: 'middle'
-                        text: '+1'
+                        background_normal: 'CreateLobby Menu/amount_button_plus.png'
+                        background_down: 'CreateLobby Menu/amount_button_plus.png'
                         on_press: root.add_spy()
                         on_press: root.push_button_sound()
+
         AnchorLayout:
             id: play_button_layout
             anchor_x: 'center'
             anchor_y: 'center'
-            size_hint:(1, .3)
+            size_hint:(1, .35)
             play_button : play_button
             
             GridLayout:
-                size_hint:(.5, .5)
+                size_hint:(.9, .3)
                 cols: 2
                 spacing : 20
+
                 Button:
                     id: play_button
-                    size_hint:(.3,.2)
-                    text:'Play'
+                    size_hint:(.6,.1)
                     on_press: root.manager.current = 'playground'
                     on_press: root.push_button_sound()
+                    background_disabled_normal: 'CreateLobby Menu/play_logo_unactive.png'
+                    background_normal: 'CreateLobby Menu/play_logo.png'
+                    background_down: 'CreateLobby Menu/play_logo.png'
                     disabled : True
 
                 Button:
-                    size_hint:(.1,.2)
-                    text:'Apply'
+                    size_hint:(.6,.1)
                     on_press: root.appear_token()
                     on_press: root.push_button_sound()
+                    background_normal: 'CreateLobby Menu/apply_button.png'
+                    background_down: 'CreateLobby Menu/apply_button.png'
 
 
 
 <ConnectScreen>:
     name: 'connect'
     token: token_id
-    AnchorLayout:
-        anchor_x: 'left'
-        anchor_y: 'top'
 
-        Button:
-            halign: 'center'
-            valign: 'middle'
-            text: 'Back'
-            size_hint: (.1, .1)
-            on_press: root.manager.current = 'main'
-            on_press: root.push_button_sound()
+    Image:
+        source: 'CreateLobby Menu/background3.png'
+        allow_stretch: True
 
-    AnchorLayout:
-        anchor_x: 'center'
-        anchor_y: 'center'
-        size_hint: (1, .8)
-        
+    BoxLayout:
+        orientation: 'vertical'
+
+        AnchorLayout:
+            anchor_x: 'left'
+            anchor_y: 'top'
+            size_hint: (.5, .15)
+
+            Button:
+                halign: 'center'
+                valign: 'middle'
+                size_hint: (.3, .5)
+                on_press: root.manager.current = 'main'
+                on_press: root.push_button_sound()
+                background_normal: 'ConnectLobby Menu/back_button.png'
+                background_down: 'ConnectLobby Menu/back_button.png'
+
         GridLayout:
             orientation: 'vertical'
-            size_hint: (.6, .7)
+            size_hint: (1, .35)
+            cols: 1
+
+            Widget:
+                id: Empty_Widget6
+            
+        GridLayout:
+            orientation: 'vertical'
+            size_hint: (1, .25)
             spacing: 30
             padding: 0
-            rows: 3
+            cols: 1
 
-            Label:
-                id: token
-                text: 'Token' 
+            GridLayout:
+                orientation: 'vertical'
+                size_hint: (1, .5)
+                spacing: 30
+                cols: 1
 
-            TextInput:
-                id: token_id
-                hint_text: 'Enter Token'   
-                multiline: 'false'
-                font_size: 30
+                BoxLayout:
+                    orientation: 'horizontal'
+                    size_hint: (1, .5)
+                    spacing: 50
+                    padding: 100
+                    
+                    Image:
+                        id: token
+                        source: 'ConnectLobby Menu/token_logo.png'
+                        allow_stretch: True
 
-            Button:                
-                halign: 'center'
-                valign: 'top'
-                text: 'Enter Game'
-                on_press: root.enter_game(root.token.text)
-                on_press: root.push_button_sound()
+                    TextInput:
+                        id: token_id
+                        halign: 'center'
+                        valign: 'center'
+                        font_size: 60
+                        hint_text: 'Enter Token'   
+                        multiline: 'false'
+
+        GridLayout:
+            orientation: 'vertical'
+            size_hint: (1, .25)
+            cols: 1
+
+            GridLayout:
+                orientation: 'vertical'
+                size_hint: (1, .2)
+                padding: 160
+                cols: 1
+
+                Button:                
+                    halign: 'center'
+                    valign: 'top'
+                    size_hint: (1, .2)
+                    on_press: root.enter_game(root.token.text)
+                    on_press: root.push_button_sound()
+                    background_normal: 'ConnectLobby Menu/play_logo.png'
+                    background_down: 'ConnectLobby Menu/play_logo.png'
 
 <PlaygroundScreen>:
     name: 'playground'
@@ -313,6 +520,10 @@
     lcl : root.locations
     grid : grid
     role_layout : role_layout
+
+    Image:
+        source: 'Playground Menu/background4.png'
+        allow_stretch: True
     
     BoxLayout:
         orientation: 'vertical'
@@ -324,13 +535,13 @@
             id: role_layout
             role_popup : role_popup
 
-            MDFillRoundFlatButton:
+            Button:
                 id: role_popup     
-                size_hint: (0.2, 0.5)           
+                size_hint: (0.4, 0.5)           
                 halign: 'center'
                 valign: 'top'
-                text: 'Role'
-                icon: 'language-python'
+                background_normal: 'Playground Menu/role_button.png'
+                background_down: 'Playground Menu/role_button.png'
                 on_press: root.rolePopup()
                 on_press: root.push_button_sound()
 
@@ -344,3 +555,25 @@
                 cols: 2
                 size_hint: (.7, .6)
                 spacing: 10
+
+        GridLayout:
+            orientation: 'vertical'
+            size_hint: (1, 0.15)
+            spacing: 10
+            cols: 1
+
+            AnchorLayout:
+                anchor_x: 'right'
+                anchor_y: 'bottom'
+                padding: 40
+                    
+                BoxLayout:
+                    orientation: 'vertical'
+                    size_hint: (0.15, 1)
+                    spacing: 10
+
+                    Button:
+                        background_normal: 'Playground Menu/back_button.png'
+                        background_down: 'Playground Menu/back_button.png'
+                        halign: 'center'
+                        valign: 'middle'   

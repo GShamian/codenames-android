@@ -1,3 +1,9 @@
+from kivy.config import Config
+MAX_SIZE = (500, 900)
+Config.set('graphics', 'width', MAX_SIZE[0])
+Config.set('graphics', 'height', MAX_SIZE[1])
+from kivy.core.window import Window
+
 import kivy
 import Global
 import client
@@ -9,13 +15,15 @@ from io import open
 from kivy.app import App 
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.uix.gridlayout import GridLayout 
+from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.label import Label 
 from kivy.uix.popup import Popup
 from kivymd.theming import ThemeManager
 from kivy.uix.button import Button
 from kivymd.app import MDApp
 from kivy.core.audio import SoundLoader
-
+from kivy.uix.widget import Widget
+from kivy.uix.image import Image
 
 Global.background_music.play()
 
@@ -49,6 +57,8 @@ class CreateLobbyScreen(Screen):
     def appear_token(self):
         Global.data = client.createLobby(Global.players_amount, Global.spy_amount)
         Global.token = Global.data[0]
+        self.token_layout.token_button.font_size = 60
+        self.token_layout.token_button.texture_update()
         self.token_layout.token_button.text = Global.token
         self.play_button_layout.play_button.disabled = False
         
@@ -114,7 +124,7 @@ class PlaygroundScreen(Screen):
             self.key_location = Global.data[2]
             self.locations = Global.data[3]
         for i in range(16):
-            my_button = Button(text=self.locations[i], on_press=self.location_press)
+            my_button = Button(text=self.locations[i], on_press=self.location_press, background_normal = 'Playground Menu/empty_location_logo.png', background_down = 'Playground Menu/empty_location_logo.png')
             self.grid.add_widget(my_button)
         print(self.key_location)
 
@@ -126,7 +136,7 @@ class PlaygroundScreen(Screen):
     def gameOver_update(self):
         while(Global.gameOver == 'true'):
             Global.gameOver = client.checkGameStatus(Global.token)
-            time.sleep(2)
+            time.sleep(1)
         self.gameOver_popup()
         
     def location_press(self, instance):
@@ -149,12 +159,12 @@ class PlaygroundScreen(Screen):
         self.manager.current = 'main'
 
     def rolePopup(self): 
-        layout = GridLayout(cols = 2, padding = 10) 
+        layout = GridLayout(cols = 2, padding = 10)
         label__role_text = Label(text = 'Role: ') 
         label_role = Label(text = self.role.upper()) 
         label__location_text = Label(text = 'Location: ') 
         label__location = Label(text = self.key_location.upper()) 
-  
+
         layout.add_widget(label__role_text) 
         layout.add_widget(label_role)
         if(self.role == 'peaceful'):
@@ -163,7 +173,7 @@ class PlaygroundScreen(Screen):
   
         popup = Popup(title ='Role', 
                       content = layout, 
-                      size_hint =(None, None), size =(250, 200))   
+                      size_hint =(None, None), size =(350, 300))   
         popup.open()
         self.game_process()
 
@@ -177,7 +187,16 @@ class SwitchingScreenApp(MDApp):
         self.theme_cls.primary_palette = 'BlueGray'
         super().__init__(**kwargs)
 
+    def check_resize(self, instance, x, y):
+        # resize X
+        if x > MAX_SIZE[0]:
+            Window.size = (300, Window.size[1])
+        # resize Y
+        if y > MAX_SIZE[1]:
+            Window.size = (Window.size[0], 150)
+
     def build(self):
+        Window.bind(on_resize=self.check_resize)
         return ScreenManagement()
 
 if __name__ == '__main__':
