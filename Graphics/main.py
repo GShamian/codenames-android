@@ -1,9 +1,8 @@
 from kivy.config import Config
-MAX_SIZE = (500, 900)
+MAX_SIZE = (500, 1050)
 Config.set('graphics', 'width', MAX_SIZE[0])
 Config.set('graphics', 'height', MAX_SIZE[1])
 from kivy.core.window import Window
-
 import kivy
 import Global
 import client
@@ -11,11 +10,9 @@ import time
 import threading
 import time
 from kivy import *
-from io import open
 from kivy.app import App 
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.uix.gridlayout import GridLayout 
-from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.label import Label 
 from kivy.uix.popup import Popup
 from kivymd.theming import ThemeManager
@@ -23,14 +20,17 @@ from kivy.uix.button import Button
 from kivymd.app import MDApp
 from kivy.core.audio import SoundLoader
 from kivy.uix.widget import Widget
-from kivy.uix.image import Image
 
 Global.background_music.play()
-
-class ScreenManagement(ScreenManager):
-    pass
+sm = ScreenManager()
+Playground_Screen = kivy.properties.ObjectProperty(None)
 
 class MainScreen(Screen):
+    def on_enter(self):
+        if(Global.isFirstGame == 'true'):
+            sm.remove_widget(sm.get_screen('playground'))
+            Global.isFirstGame = 'false'
+
     def isAdmin_change(self, flag):
         Global.isAdmin = flag
     def push_button_sound(self):
@@ -61,6 +61,8 @@ class CreateLobbyScreen(Screen):
         self.token_layout.token_button.texture_update()
         self.token_layout.token_button.text = Global.token
         self.play_button_layout.play_button.disabled = False
+        Playground_Screen = PlaygroundScreen(name = 'playground')
+        sm.add_widget(Playground_Screen)
         
     def add_spy(self):
         if(Global.spy_amount == 4):
@@ -99,10 +101,12 @@ class ConnectScreen(Screen):
                              size_hint =(None, None), size =(200, 100))   
                 popup.open()
             else:
-                self.manager.current = 'playground'
+                Playground_Screen = PlaygroundScreen(name = 'playground')
+                sm.add_widget(Playground_Screen)
+                sm.current = 'playground'
 
     def get_token(self):
-        return self.token_code
+        return self.token_code.upper()
     pass
 
 class PlaygroundScreen(Screen):
@@ -131,17 +135,17 @@ class PlaygroundScreen(Screen):
     def game_process(self):
         gameCheck_status = threading.Thread(target=self.gameOver_update, daemon=True)
         gameCheck_status.start()
-        print('after thread')
 
     def gameOver_update(self):
         while(Global.gameOver == 'true'):
             Global.gameOver = client.checkGameStatus(Global.token)
             time.sleep(1)
+        Global.gameOver = 'true'
         self.gameOver_popup()
         
     def location_press(self, instance):
-        client.checkLocation(Global.token, instance.text)
-        print('was pressed')
+        if(self.role == 'spy'):
+            client.checkLocation(Global.token, instance.text)
 
     def gameOver_popup(self):
         layout = GridLayout(cols = 1, padding = 10) 
@@ -152,11 +156,12 @@ class PlaygroundScreen(Screen):
         popup = Popup(title ='Congratz', 
                       content = layout, 
                       size_hint =(None, None), size =(250, 200))   
-        popup.bind(on_press=self.goto_Main)
+        popup.bind(on_dismiss=self.goto_Main)
         popup.open()
 
-    def goto_Main(self):
-        self.manager.current = 'main'
+    def goto_Main(self, instance):
+        Global.isFirstGame = 'true'
+        sm.current = 'main'
 
     def rolePopup(self): 
         layout = GridLayout(cols = 2, padding = 10)
@@ -177,28 +182,20 @@ class PlaygroundScreen(Screen):
         popup.open()
         self.game_process()
 
-        
-
-
-class SwitchingScreenApp(MDApp):
+class SpyFallApp(MDApp):
     def __init__(self, **kwargs):
         self.title = 'SpyFall'
         self.theme_cls.theme_style = 'Dark'
         self.theme_cls.primary_palette = 'BlueGray'
         super().__init__(**kwargs)
 
-    def check_resize(self, instance, x, y):
-        # resize X
-        if x > MAX_SIZE[0]:
-            Window.size = (300, Window.size[1])
-        # resize Y
-        if y > MAX_SIZE[1]:
-            Window.size = (Window.size[0], 150)
-
     def build(self):
-        Window.bind(on_resize=self.check_resize)
-        return ScreenManagement()
+        sm.add_widget(MainScreen(name='main'))
+        sm.add_widget(OptionsScreen(name='options'))
+        sm.add_widget(CreateLobbyScreen(name='createlobby'))
+        sm.add_widget(ConnectScreen(name='connect'))
+        return sm
 
 if __name__ == '__main__':
-    SwitchingScreenApp().run()
+    SpyFallApp().run()
     
