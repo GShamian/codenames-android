@@ -5,6 +5,7 @@ address_to_server = ('localhost', 5050)
 
 def createLobby(players_amount, spy_amount):
     client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    client.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     client.connect(address_to_server)
     client.send(bytes("createLobby_{players_amount}_{spy_amount}".format(players_amount = players_amount, spy_amount = spy_amount), encoding='UTF-8'))
     # Декодирую объект
@@ -17,6 +18,7 @@ def createLobby(players_amount, spy_amount):
 
 def connect(token):
     client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    client.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     client.connect(address_to_server)
     client.send(bytes(token, encoding='UTF-8'))
     # Декодирую объект
@@ -31,6 +33,7 @@ def connect(token):
     
 def checkLocation(token, location):
     client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    client.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     client.connect(address_to_server)
     client.send(bytes(location + '_' + token, encoding='UTF-8'))
     # Получаем ответ от сервера является ли эта локация верной
@@ -39,6 +42,7 @@ def checkLocation(token, location):
 
 def checkGameStatus(token, code='knock-knock') :
     client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    client.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     client.connect(address_to_server)
     client.send(bytes(code + '_' + token, encoding='UTF-8'))
     # Получаем ответ от сервера является ли эта локация верной
