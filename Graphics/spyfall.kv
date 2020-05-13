@@ -32,6 +32,7 @@
 
             Image:
                 source: 'Main Menu/main_logo.png'
+                #source: 'lis.png'
                 allow_stretch: True
 
         GridLayout:
@@ -182,14 +183,14 @@
 
             GridLayout:
                 orientation: 'horizontal'
-                size_hint: (.7, .25)
+                size_hint: (.9, .25)
                 cols: 1
 
                 Slider:
                     id: music_volume
                     cursor_image: 'Options Menu/slider_handler.png'
                     background_horizontal: 'Options Menu/slider_line2.png'
-                    cursor_size: (80, 130)
+                    cursor_size: (60, 100)
                     padding: 128
                     value: 1
                     max: 10
@@ -215,7 +216,7 @@
                     id: effects_volume
                     cursor_image: 'Options Menu/slider_handler.png'
                     background_horizontal: 'Options Menu/slider_line2.png'
-                    cursor_size: (80, 130)
+                    cursor_size: (60, 100)
                     padding: 128
                     value: 1
                     max: 10
